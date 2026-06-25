@@ -1,0 +1,144 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  plus                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+libs            ("liboverset.so");
+
+application     overPimpleDyMFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         5;
+
+deltaT          0.000001;
+
+writeControl    adjustableRunTime;;
+
+writeInterval   0.01;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+adjustTimeStep  yes;
+
+maxCo    1;
+
+rho		rhoInf;
+rhoInf 	1.0;
+
+functions
+{
+
+Q1
+    {
+        type            Q;
+        libs            ("libfieldFunctionObjects.so");
+        writeControl    writeTime;
+    }
+    vorticity1
+    {
+        type            vorticity;
+        libs            ("libfieldFunctionObjects.so");
+        writeControl    writeTime;
+    }
+
+turbine1
+{
+	type 			forceCoeffs;
+	functionObjectLibs 	("libforces.so");
+	writeControl   		timeStep;
+	outputControl   	timeStep;    	
+	timeInterval    	1;
+	outputInterval 		1;
+	patches 		(wing);
+	log         		yes;
+	rho	 		rhoInf;
+	rhoInf 			1.225;
+	CofR 			(0 0 0);
+	liftDir 		(0 1 0);
+	dragDir 		(1 0 0);
+	pitchAxis 		(0 0 1);
+	magUInf 		5.07;
+	lRef 			0.6;
+	Aref 			0.260764;
+}
+/*
+turbine2
+{
+	type 			forceCoeffs;
+	functionObjectLibs 	("libforces.so");
+	writeControl   		timeStep;
+	outputControl   	timeStep;    	
+	timeInterval    	1;
+	outputInterval 		1;
+	patches 		(cylinder2);
+	log         		yes;
+	rho	 			rhoInf;
+	rhoInf 			1.225;
+	CofR 			(0 0 0);
+	liftDir 		(0 1 0);
+	dragDir 		(1 0 0);
+	pitchAxis 		(0 0 1);
+	magUInf 		7;
+	lRef 			0.6;
+	Aref 			0.0209;
+}
+turbine3
+{
+	type 			forceCoeffs;
+	functionObjectLibs 	("libforces.so");
+	writeControl   		timeStep;
+	outputControl   	timeStep;    	
+	timeInterval    	1;
+	outputInterval 		1;
+	patches 		(cylinder3);
+	log         		yes;
+	rho	 		rhoInf;
+	rhoInf 			1.225;
+	CofR 			(0 0 0);
+	liftDir 		(0 1 0);
+	dragDir 		(1 0 0);
+	pitchAxis 		(0 0 1);
+	magUInf 		7;
+	lRef 			0.6;
+	Aref 			0.0209;
+}*/
+
+}
+
+libs   ("librigidBodyDynamics.so");
+
+
+
+
+
+// ************************************************************************* //
