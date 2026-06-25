@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:  1.4                                   |
+|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|    \\/     M anipulation  | For copyright notice see file Copyright         |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           volScalarField;
+    object          k;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "include/initialConditions"
+
+
+dimensions [0 2 -2 0 0 0 0];
+
+internalField uniform $turbulentKE;
+
+boundaryField
+{
+    oversetSurface
+    {
+        type    overset;
+       value   uniform 0.0005723;
+
+    }
+    
+
+    in
+    {
+        type    fixedValue;
+        value   uniform $turbulentKE;
+    }
+    out
+    {
+        type        inletOutlet;
+        inletValue  uniform $turbulentKE;
+        value       uniform $turbulentKE;
+    }
+
+    
+    top
+    {
+        type            zeroGradient;
+    }
+
+wing
+    {
+        type    kqRWallFunction;
+        value   uniform 0.0005723;
+    }
+
+}
+
+
+// ************************************************************************* //
